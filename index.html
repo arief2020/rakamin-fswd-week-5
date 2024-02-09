@@ -17,35 +17,51 @@
     <div class="container-fluid full-height">
       <div class="row full-height">
         <!-- Sidebar -->
-        <div class="sidebar col-3 bg-secondary pt-3">
-          <div class="h-100 justify-content-center d-flex flex-column justify-content-between">
-            <div>
-                <div class="sidebar-title">
-                  <h3 class="text-white text-center">Sidebar</h3>
+        <div class="sidebar col-3 pt-3">
+          <div
+            class="h-100 justify-content-center d-flex flex-column justify-content-between"
+          >
+            <div class="sidebar-con">
+              <div class="sidebar-title mb-5">
+                <h3 class="text-white text-center">Sidebar</h3>
+              </div>
+
+              <div class="sidebar-nav">
+                <div
+                  id="nav-registration"
+                  class="nav-registration text-center border py-3 text-light"
+                >
+                  Registration Form
                 </div>
-                <div class="sidebar-nav mt-5">
-                  <div
-                    id="nav-registration"
-                    class="nav-registration text-center border py-3 text-light"
-                  >
-                    Registration Form
-                  </div>
-                  <div id="nav-list-data" class="nav-list-data text-center border py-3 text-light">
-                    List of Registrant
-                  </div>
+                <div
+                  id="nav-list-data"
+                  class="nav-list-data text-center border py-3 text-light"
+                >
+                  List of Registrant
                 </div>
+              </div>
             </div>
-            <div class="theme border">
-              <p class="text-center mb-0 py-3 text-light">Dark Mode</p>
+            <div id="theme" class="theme border">
+              <p id="text-theme" class="text-center mb-0 py-3 text-light">
+                Dark Mode
+              </p>
             </div>
           </div>
         </div>
         <!-- Content -->
-        <section class="col-9 pt-3" id="registration-content">
+        <section class="col-sm-9 col-12 pt-3" id="registration-content">
           <div class="h-100 container">
             <!-- form -->
-            <div class="justify-content-center pt-5 px-5 border-end">
+            <div class="forms justify-content-center pt-5 px-5">
               <h1 class="text-center">Form Tab</h1>
+              <div id="mobile-theme-form" class="mobile-theme theme border">
+                <p
+                  id="text-mobile-theme-form"
+                  class="text-center mb-0 py-3 text-light"
+                >
+                  Dark Mode
+                </p>
+              </div>
               <form method="post" class="mt-3">
                 <div class="name mb-3">
                   <label for="name" class="form-label">Name:</label>
@@ -56,7 +72,12 @@
                     placeholder="minimum 10 character
                     "
                   />
-                  <p class="text-danger">* Nama minimal 10 karakter</p>
+                  <p
+                    id="danger-input-name"
+                    class="danger danger-input-name text-danger"
+                  >
+                    * Nama minimal 10 karakter
+                  </p>
                 </div>
                 <div class="age mb-3">
                   <label for="age" class="form-label">Age:</label>
@@ -66,7 +87,12 @@
                     id="input-age"
                     placeholder="minimum 25 year old"
                   />
-                  <p class="text-danger">* Umur minimal 25 tahun</p>
+                  <p
+                    id="danger-input-age"
+                    class="danger danger-input-age text-danger"
+                  >
+                    * Umur minimal 25 tahun
+                  </p>
                 </div>
                 <div class="uang-saku mb-3">
                   <label for="pocket-money" class="form-label"
@@ -78,10 +104,15 @@
                     id="input-pocket"
                     placeholder="minimum 100k and maximum 1 million rupiah"
                   />
-                  <p class="text-danger">* Uang sangu minimal 100 ribu dan maksimal 1 juta</p>
+                  <p
+                    id="danger-input-money"
+                    class="danger danger-input-money text-danger"
+                  >
+                    * Uang sangu minimal 100 ribu dan maksimal 1 juta
+                  </p>
                 </div>
                 <button
-                  onclick="functionSubmit(event)"
+                  id="btn-submitreg"
                   type="button "
                   class="btn btn-primary text-center w-100 py-2"
                 >
@@ -89,14 +120,62 @@
                 </button>
               </form>
             </div>
+
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="exampleModal"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div
+                    class="modal-body d-flex justify-content-center align-items-center"
+                  >
+                    <img src="success.svg" width="100px" height="100px" />
+                  </div>
+                  <h1
+                    class="modal-title fs-5 text-center"
+                    id="exampleModalLabel"
+                  >
+                    Success Insert Data
+                  </h1>
+                  <div
+                    class="modal-footer d-flex justify-content-center align-items-center"
+                  >
+                    <button type="button" class="btn btn-primary" id="list">
+                      Go to List
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
             <!-- end form -->
           </div>
         </section>
-        <section class="col-9 pt-3 active" id="list-data-content">
+        <section class="col-sm-9 col-12 pt-3 active" id="list-data-content">
           <div class="h-100 container">
             <!-- list -->
             <div class="justify-content-center pt-5 px-5">
               <h1 class="text-center">List Tab</h1>
+              <div id="mobile-theme-list" class="mobile-theme theme border">
+                <p
+                  id="text-theme-list"
+                  class="text-center mb-0 py-3 text-light"
+                >
+                  Dark Mode
+                </p>
+              </div>
               <table class="table text-center mt-3">
                 <thead>
                   <tr>
@@ -123,6 +202,11 @@
       crossorigin="anonymous"
     ></script>
 
-    <script src="index.js"></script>
+    <script
+      src="https://kit.fontawesome.com/b008976445.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="script.js"></script>
   </body>
 </html>
