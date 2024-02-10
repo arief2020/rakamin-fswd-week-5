@@ -31,7 +31,7 @@ const elements = {
   body: document.body,
   myModal: new bootstrap.Modal(document.getElementById("exampleModal")),
 };
-const inputField = new Field(elements.inputNames.value, elements.inputAge.value, elements.inputPocketMoney.value)
+
 
 let screenWidth = window.innerWidth;
 const people = [];
@@ -57,11 +57,11 @@ const validationInput = (names, age, pocketMoney) => {
 
 const handleSubmit = (event) => {
   event.preventDefault();
-  console.log(inputField)
+  let inputField = new Field(elements.inputNames.value, elements.inputAge.value, elements.inputPocketMoney.value)
   let { names, pocketMoney, age } = inputField;
-
+  
   const message = validationInput(names, age, pocketMoney);
-
+  
   if (Object.keys(message).length) {
     // If there are validation errors, display them and return false
     clearInput();
