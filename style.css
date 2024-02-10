@@ -83,6 +83,24 @@ body.dark .nav-list-data:hover {
 .mobile-theme {
   display: none;
 }
+.loading {
+  opacity: 0;
+  font-size: 36px;
+  animation: rotation 1s infinite linear;
+}
+.loading.active {
+  opacity: 1;
+  display: inline-block;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 @media only screen and (max-width: 600px) {
   body,

@@ -1,113 +1,107 @@
-const navRegistration = document.getElementById("nav-registration");
-const navList = document.getElementById("nav-list-data");
-const registrationContent = document.getElementById("registration-content");
-const listContent = document.getElementById("list-data-content");
-const inputNames = document.getElementById("input-name");
-const inputAge = document.getElementById("input-age");
-const inputPocketMoney = document.getElementById("input-pocket");
-const dangerName = document.getElementById("danger-input-name");
-const dangerAge = document.getElementById("danger-input-age");
-const dangerMoney = document.getElementById("danger-input-money");
-const btnToList = document.getElementById("list");
-const btnSubmit = document.getElementById("btn-submitreg");
-const btnTheme = document.getElementById("theme");
-const textTheme = document.getElementById("text-theme");
-const btnMobileThemeForm = document.getElementById("mobile-theme-form");
-const textMobileThemeForm = document.getElementById("text-theme-form");
-const btnMobileThemeList = document.getElementById("mobile-theme-list");
-const textMobileThemeList = document.getElementById("text-theme-list");
+class Field{
+  constructor(names, age, pocketMoney){
+    this.names = names,
+    this.age = age,
+    this.pocketMoney = pocketMoney
+  }
+}
+
+const elements = {
+  navRegistration: document.getElementById("nav-registration"),
+  navList: document.getElementById("nav-list-data"),
+  registrationContent: document.getElementById("registration-content"),
+  listContent: document.getElementById("list-data-content"),
+  inputNames: document.getElementById("input-name"),
+  inputAge: document.getElementById("input-age"),
+  inputPocketMoney: document.getElementById("input-pocket"),
+  dangerName: document.getElementById("danger-input-name"),
+  dangerAge: document.getElementById("danger-input-age"),
+  dangerMoney: document.getElementById("danger-input-money"),
+  btnToList: document.getElementById("list"),
+  btnSubmit: document.getElementById("btn-submitreg"),
+  btnTheme: document.getElementById("theme"),
+  textTheme: document.getElementById("text-theme"),
+  btnMobileThemeForm: document.getElementById("mobile-theme-form"),
+  textMobileThemeForm: document.getElementById("text-theme-form"),
+  btnMobileThemeList: document.getElementById("mobile-theme-list"),
+  textMobileThemeList: document.getElementById("text-theme-list"),
+  contentResume: document.getElementById("content-resume"),
+  loading: document.getElementById("loading"),
+  tableBody: document.getElementById("table-budy"),
+  body: document.body,
+  myModal: new bootstrap.Modal(document.getElementById("exampleModal")),
+};
+const inputField = new Field(elements.inputNames.value, elements.inputAge.value, elements.inputPocketMoney.value)
+
 let screenWidth = window.innerWidth;
-const body = document.body;
-const myModal = new bootstrap.Modal(document.getElementById("exampleModal"));
 const people = [];
 
-btnSubmit.addEventListener('click', (event) => {
-  event.preventDefault();
-  const names = inputNames.value;
-  const age = inputAge.value;
-  const pocketMoney = inputPocketMoney.value;
+// function
+const validationInput = (names, age, pocketMoney) => {
   const message = {};
+
   if (names.length < 10) {
     message.name = true;
-    dangerName.classList.add("active");
-
-    // return console.log(`name field must have 10 character or more`);
+    elements.dangerName.classList.add("active");
   }
   if (age < 25) {
     message.age = true;
-    dangerAge.classList.add("active");
-    // message.push(`minimum age must be 25`)
+    elements.dangerAge.classList.add("active");
   }
   if (pocketMoney < 100000 || pocketMoney > 1000000) {
     message.pocketMoney = true;
-    dangerMoney.classList.add("active");
-    // message.push("minimum money must be 100000 and maximum money must be 1000000")
+    elements.dangerMoney.classList.add("active");
   }
-  if (!message) {
-    console.log(message);
-    clearInput();
-    return;
-  }
-  let person = {
-    names: names,
-    age: age,
-    pocketMoney: pocketMoney,
-  };
-  people.push(person);
-  console.log(people);
-  const textResume = resumePeople();
-  const resumeTag = document.getElementById("content-resume");
-  resumeTag.innerHTML = textResume;
-  readPeople();
-  clearInput();
-  myModal.show();
-})
-// const functionSubmit = (event) => {
-//   event.preventDefault();
-//   const names = inputNames.value;
-//   const age = inputAge.value;
-//   const pocketMoney = inputPocketMoney.value;
-//   const message = {};
-//   if (names.length < 10) {
-//     message.name = true;
-//     dangerName.classList.add("active");
+  return message;
+};
 
-//     // return console.log(`name field must have 10 character or more`);
-//   }
-//   if (age < 25) {
-//     message.age = true;
-//     dangerAge.classList.add("active");
-//     // message.push(`minimum age must be 25`)
-//   }
-//   if (pocketMoney < 100000 || pocketMoney > 1000000) {
-//     message.pocketMoney = true;
-//     dangerMoney.classList.add("active");
-//     // message.push("minimum money must be 100000 and maximum money must be 1000000")
-//   }
-//   if (!message) {
-//     console.log(message);
-//     clearInput();
-//     return;
-//   }
-//   let person = {
-//     names: names,
-//     age: age,
-//     pocketMoney: pocketMoney,
-//   };
-//   people.push(person);
-//   console.log(people);
-//   const textResume = resumePeople();
-//   const resumeTag = document.getElementById("content-resume");
-//   resumeTag.innerHTML = textResume;
-//   readPeople();
-//   clearInput();
-//   myModal.show();
-// };
+const handleSubmit = (event) => {
+  event.preventDefault();
+  console.log(inputField)
+  let { names, pocketMoney, age } = inputField;
+
+  const message = validationInput(names, age, pocketMoney);
+
+  if (Object.keys(message).length) {
+    // If there are validation errors, display them and return false
+    clearInput();
+    return false;
+  }
+
+  // Show loading animation
+  loading()
+    .then(() => {
+      // Loading animation complete, proceed with form submission
+      const person = { names, age, pocketMoney };
+      people.push(person);
+      console.log(people);
+      const textResume = resumePeople();
+      elements.contentResume.innerHTML = textResume;
+      readPeople();
+      clearInput();
+      elements.myModal.show();
+      return true; // Return true indicating successful submission
+    })
+    .catch((error) => {
+      console.error(error);
+      return false; // Return false indicating submission failure
+    });
+};
+
+const loading = () => {
+  elements.loading.classList.add("active");
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      elements.loading.classList.remove("active");
+      resolve(); // Resolve the promise after the loading animation is complete
+    }, 2000);
+  });
+};
 
 const clearInput = () => {
-  document.getElementById("input-name").value = "";
-  document.getElementById("input-age").value = "";
-  document.getElementById("input-pocket").value = "";
+  elements.inputNames.value = "";
+  elements.inputAge.value = "";
+  elements.inputPocketMoney.value = "";
 };
 
 const readPeople = () => {
@@ -118,10 +112,11 @@ const readPeople = () => {
     <td>${people[index].names}</td>
     <td>${people[index].age}</td>
     <td>${people[index].pocketMoney}</td>
-    `;
-    document.getElementById("table-budy").appendChild(data);
+  `;
+    elements.tableBody.appendChild(data);
   }
 };
+
 const resumePeople = () => {
   let averageOfAge = 0;
   let averageOfMoney = 0;
@@ -135,87 +130,92 @@ const resumePeople = () => {
   return `Rata rata pendaftar memiliki uang sangu sebesar ${averageOfMoney} dengan rata rata umur ${averageOfAge}`;
 };
 
-// const goToList = () => {
-//   const myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
-//   myModal.hide()
-// listContent.classList.add("active")
-// registrationContent.classList.remove("active")
-// }
+const handleNavRegistrationClick = () => {
+  elements.registrationContent.classList.add("active");
+  elements.listContent.classList.remove("active");
+};
 
-navRegistration.addEventListener("click", () => {
-  registrationContent.classList.add("active");
-  listContent.classList.remove("active");
-});
-navList.addEventListener("click", () => {
-  listContent.classList.add("active");
-  registrationContent.classList.remove("active");
-});
+const handleNavListClick = () => {
+  elements.listContent.classList.add("active");
+  elements.registrationContent.classList.remove("active");
+};
 
-inputNames.addEventListener("input", () => {
-  if (inputNames.value.trim().length > 10) {
-    dangerName.classList.remove("active");
+const handleInputNames = () => {
+  if (elements.inputNames.value.trim().length > 10) {
+    elements.dangerName.classList.remove("active");
   }
-});
-inputAge.addEventListener("input", () => {
-  if (parseInt(inputAge.value) >= 25) {
-    dangerAge.classList.remove("active");
+};
+
+const handleInputAge = () => {
+  if (parseInt(elements.inputAge.value) >= 25) {
+    elements.dangerAge.classList.remove("active");
   }
-});
-inputPocketMoney.addEventListener("input", () => {
-  if (
-    parseInt(inputPocketMoney.value) >= 100000 &&
-    parseInt(inputPocketMoney.value) <= 1000000
-  ) {
-    dangerMoney.classList.remove("active");
+};
+
+const handleInputPocketMoney = () => {
+  const value = parseInt(elements.inputPocketMoney.value);
+  if (value >= 100000 && value <= 1000000) {
+    elements.dangerMoney.classList.remove("active");
   }
-});
+};
 
-btnToList.addEventListener("click", () => {
-  myModal.hide();
-  listContent.classList.add("active");
-  registrationContent.classList.remove("active");
-});
+const handleBtnToListClick = () => {
+  elements.myModal.hide();
+  elements.listContent.classList.add("active");
+  elements.registrationContent.classList.remove("active");
+};
 
-btnTheme.addEventListener("click", () => {
-  body.classList.toggle("dark");
-  if (body.classList.contains("dark")) {
-    textTheme.innerHTML = "Light Mode";
-  } else {
-    textTheme.innerHTML = "Dark Mode";
-  }
-});
+const handleBtnThemeClick = () => {
+  elements.body.classList.toggle("dark");
+  elements.textTheme.innerHTML = elements.body.classList.contains("dark")
+    ? "Light Mode"
+    : "Dark Mode";
+};
 
-btnMobileThemeForm.addEventListener("click", () => {
-  body.classList.toggle("dark");
-  if (body.classList.contains("dark")) {
-    textMobileThemeForm.innerHTML = "Light Mode";
-  } else {
-    textMobileThemeForm.innerHTML = "Dark Mode";
-  }
-});
-btnMobileThemeList.addEventListener("click", () => {
-  body.classList.toggle("dark");
-  if (body.classList.contains("dark")) {
-    textMobileThemeList.innerHTML = "Light Mode";
-  } else {
-    textMobileThemeList.innerHTML = "Dark Mode";
-  }
-});
+const handleBtnMobileThemeFormClick = () => {
+  elements.body.classList.toggle("dark");
+  const text = elements.body.classList.contains("dark")
+    ? "Light Mode"
+    : "Dark Mode";
+  elements.textMobileThemeList.innerHTML = text;
+  elements.textMobileThemeForm.innerHTML = text;
+};
 
-function changeTextContent() {
-  var screenWidth = window.innerWidth;
+const handleBtnMobileThemeListClick = () => {
+  elements.body.classList.toggle("dark");
+  const text = elements.body.classList.contains("dark")
+    ? "Light Mode"
+    : "Dark Mode";
+  elements.textMobileThemeList.innerHTML = text;
+  elements.textMobileThemeForm.innerHTML = text;
+};
 
-  if (screenWidth < 600) {
-    navRegistration.innerHTML = "<i class='fa-solid fa-table-list'></i>";
-    navList.innerHTML = "<i class='fa-solid fa-user-pen'></i>";
-  } else {
-    navRegistration.innerHTML = "Registration Form";
-    navList.innerHTML = "List of Registrant";
-  }
-}
+const changeTextContent = () => {
+  const screenWidth = window.innerWidth;
+  const isMobile = screenWidth < 600;
+  elements.navRegistration.innerHTML = isMobile
+    ? "<i class='fa-solid fa-table-list'></i>"
+    : "Registration Form";
+  elements.navList.innerHTML = isMobile
+    ? "<i class='fa-solid fa-user-pen'></i>"
+    : "List of Registrant";
+};
 
-// Initial call to change text content
-changeTextContent();
-
-// Listen for resize events to update text content
+// event
+elements.btnSubmit.addEventListener("click", handleSubmit);
+elements.navRegistration.addEventListener("click", handleNavRegistrationClick);
+elements.navList.addEventListener("click", handleNavListClick);
+elements.inputNames.addEventListener("input", handleInputNames);
+elements.inputAge.addEventListener("input", handleInputAge);
+elements.inputPocketMoney.addEventListener("input", handleInputPocketMoney);
+elements.btnToList.addEventListener("click", handleBtnToListClick);
+elements.btnTheme.addEventListener("click", handleBtnThemeClick);
+elements.btnMobileThemeForm.addEventListener(
+  "click",
+  handleBtnMobileThemeFormClick
+);
+elements.btnMobileThemeList.addEventListener(
+  "click",
+  handleBtnMobileThemeListClick
+);
 window.addEventListener("resize", changeTextContent);
