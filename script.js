@@ -1,8 +1,6 @@
-class Field{
-  constructor(names, age, pocketMoney){
-    this.names = names,
-    this.age = age,
-    this.pocketMoney = pocketMoney
+class Field {
+  constructor(names, age, pocketMoney) {
+    (this.names = names), (this.age = age), (this.pocketMoney = pocketMoney);
   }
 }
 
@@ -32,7 +30,6 @@ const elements = {
   myModal: new bootstrap.Modal(document.getElementById("exampleModal")),
 };
 
-
 let screenWidth = window.innerWidth;
 const people = [];
 
@@ -57,11 +54,15 @@ const validationInput = (names, age, pocketMoney) => {
 
 const handleSubmit = (event) => {
   event.preventDefault();
-  let inputField = new Field(elements.inputNames.value, elements.inputAge.value, elements.inputPocketMoney.value)
+  let inputField = new Field(
+    elements.inputNames.value,
+    elements.inputAge.value,
+    elements.inputPocketMoney.value
+  );
   let { names, pocketMoney, age } = inputField;
-  
+
   const message = validationInput(names, age, pocketMoney);
-  
+
   if (Object.keys(message).length) {
     // If there are validation errors, display them and return false
     clearInput();
